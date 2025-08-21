@@ -1,22 +1,23 @@
 package service;
 
 
-import com.senai.oficina_teste_swagger.domain.entity.Servico;
-import com.senai.oficina_teste_swagger.domain.exception.RegraDeNegocioException;
-import com.senai.oficina_teste_swagger.domain.repository.ServicoRepository;
+
+import entity.Conta;
+import exception.RegraDeNegocioException;
 import org.springframework.stereotype.Service;
+import repository.ContaRepository;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 @Service
 public class ContaAPPService {
-    private final ContaAPPService repository;
+    private final ContaRepository repository;
 
     public ContaAPPService(ContaRepository repository) {
-        this.repository = repository;
+        this.repository = (ContaRepository) repository;
     }
 
-    public Conta salvar(Conta) {
+    public Conta salvar(Conta conta) {
         validar(conta);
         return repository.save(conta);
     }
@@ -44,8 +45,10 @@ public class ContaAPPService {
         repository.deleteById(id);
     }
 
+
+
     private void validar(Conta conta) {
-        if (conta.getPreco() < 10)
+        if (conta.getSaldo() <= 10)
             throw new RegraDeNegocioException("Valor minimo na conta 10 reais");
 
         long dias = ChronoUnit.DAYS.between(conta.getDataInicio(), conta.getDataFim());

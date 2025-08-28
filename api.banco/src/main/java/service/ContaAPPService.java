@@ -14,7 +14,7 @@ public class ContaAPPService {
     private final ContaRepository repository;
 
     public ContaAPPService(ContaRepository repository) {
-        this.repository = (ContaRepository) repository;
+        this.repository =  repository;
     }
 
     public Conta salvar(Conta conta) {

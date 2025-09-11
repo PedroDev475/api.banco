@@ -17,27 +17,28 @@ import service.ContaAPPService;
 
 import java.util.List;
 
-@Tag(name = "Conta", description = "Cadastro de Conta PIX")
+@Tag(name = "Loja de Celular", description = "Celulares em geral")
 @RestController
-@RequestMapping("/servicos")
+@RequestMapping("/Produto")
 public class ContaController {
     private final ContaAPPService service;
+
 
     public ContaController(ContaAPPService service) {
         this.service = service;
     }
 
     @Operation(
-            summary = "Cadastrar uma nova conta",
-            description = "Adiciona uma nova conta pix,e fazer um novo cadastro ",
+            summary = "Cadastrar um novo celular",
+            description = "Adicionar um celular ",
             requestBody = @RequestBody(
                     required = true,
                     content = @Content(
-                            schema = @Schema(implementation = Conta.class),
-                            examples = @ExampleObject(value = """
+                            schema = @Schema(implementation = ContaDTO.class),
+                            examples = @ExampleObject(name = "Exemplo valido",value = """
                                         {
-                                          "descricao": "Conta ",
-                                          "Saldo": 120.00,
+                                          "descricao": "celular ",
+                                          "Valor": 500.00,
                                           "dataIniciodaTransacao": "2025-08-10",
                                           "dataFinaldaTransacao": "2025-08-13"
                                         }
@@ -46,10 +47,23 @@ public class ContaController {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Conta cadastrada com sucesso"),
-                    @ApiResponse(responseCode = "400", description = "Violação de regras de negócio")
-            }
+                    @ApiResponse(responseCode = "200", description = "Celular cadastrado com sucesso"),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Erro de Validação"),
+                        content = @Content(
+                                mediaType = "Aplication/json",
+                         examples = {
+                                 @ExampleObject(name = "Cadastro invalido", value = "\"numero maximo de cadastro e de 2 \""),
+                                 @ExampleObject(name = "Duração extendida", value = "\" Tempo maximo de cadastro e de 5 dias \"")
+                         }
+                         }
     )
+
+    )
+
+}
+
     @PostMapping
     public ResponseEntity<ContaDTO> criar(@Valid @RequestBody ContaDTO dto) {
         var salvo = service.salvar(dto.toEntity());
@@ -57,8 +71,8 @@ public class ContaController {
     }
 
     @Operation(
-            summary = "Listar todos os serviços",
-            description = "Retorna todos os serviços cadastrados"
+            summary = "Listar todos os celulares cadastrados",
+            description = "Retorna todos os celulares cadastrados"
     )
     @GetMapping
     public List<ContaDTO> listar() {
@@ -66,11 +80,11 @@ public class ContaController {
     }
 
     @Operation(
-            summary = "Buscar serviço por ID",
-            description = "Retorna um serviço existente a partir do seu ID",
+            summary = "Buscar celular por ID",
+            description = "Retorna um celular existente a partir do seu ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Serviço encontrado"),
-                    @ApiResponse(responseCode = "404", description = "Serviço não encontrado")
+                    @ApiResponse(responseCode = "200", description = "celular encontrado"),
+                    @ApiResponse(responseCode = "404", description = "celular não encontrado")
             }
     )
     @GetMapping("/{id}")
@@ -79,14 +93,14 @@ public class ContaController {
     }
 
     @Operation(
-            summary = "Atualizar Conta",
-            description = "Atualiza os dados de uma conta com novas informações",
+            summary = "Atualizar cadastro do celular",
+            description = "Atualiza os dados do celular  com novas informações",
             requestBody = @RequestBody(
                     required = true,
                     content = @Content(schema = @Schema(implementation = ContaDTO.class))
             ),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Serviço atualizado"),
+                    @ApiResponse(responseCode = "200", description = "atualizado"),
                     @ApiResponse(responseCode = "400", description = "Violação de regras de negócio")
             }
     )
@@ -97,8 +111,8 @@ public class ContaController {
     }
 
     @Operation(
-            summary = "Deletar conta",
-            description = "Remove uma conta da base de dados a partir do seu ID",
+            summary = "Deletar cadastro",
+            description = "Remove um cadastro da base de dados a partir do seu ID",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Conta removida com sucesso"),
                     @ApiResponse(responseCode = "404", description = "Conta não encontrada")

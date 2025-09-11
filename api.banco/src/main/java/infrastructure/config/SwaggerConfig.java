@@ -10,12 +10,12 @@ public class SwaggerConfig {
     public OpenAPI ContaOpenAPI() {
         return new OpenAPI()
     .info(new Info()
-            .title("API - Conta")
-            .description("Conta do Banco para o uso do PIX")
+            .title("API - Loja")
+            .description("Loja de celular")
             .version("1.0")
             .contact(new Contact()
-                    .name("PIX")
-                    .email("contapixoficial.com"))
+                    .name("Celular")
+                    .email("LojaCelular.com"))
     );
     }
 }

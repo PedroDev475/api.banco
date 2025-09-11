@@ -28,19 +28,19 @@ public class ContaAPPService {
 
     public Conta buscarPorId(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Conta não encontrado."));
+                .orElseThrow(() -> new RegraDeNegocioException("Cadastro Encontrado."));
     }
 
-    public Conta atualizar(Long id, Conta contaAtualizada) {
+    public Conta atualizar(Long id, Conta cadastroAtualizada) {
       Conta existente = buscarPorId(id);
-     contaAtualizada.setId(existente.getId());
-        validar(contaAtualizada);
-        return repository.save(contaAtualizada);
+     cadastroAtualizada.setId(existente.getId());
+        validar(cadastroAtualizada);
+        return repository.save(cadastroAtualizada);
     }
 
     public void deletar(Long id) {
         if (!repository.existsById(id)) {
-            throw new RegraDeNegocioException("Conta não encontrado.");
+            throw new RegraDeNegocioException("Deletar Cadastro.");
         }
         repository.deleteById(id);
     }
@@ -48,12 +48,11 @@ public class ContaAPPService {
 
 
     private void validar(Conta conta) {
-        if (conta.getSaldo() <= 10)
-            throw new RegraDeNegocioException("Valor minimo na conta 10 reais");
-
+        if (conta.getCadastro()  == 2 )
+            throw new RegraDeNegocioException("Valor maximo de celulares cadastrados");
         long dias = ChronoUnit.DAYS.between(conta.getDataInicio(), conta.getDataFim());
-        if (dias > 100)
-            throw new RegraDeNegocioException("A conta não poderá ficar inativa por 100 dias");
+        if (dias ==  5)
+            throw new RegraDeNegocioException("O cadastro do celular acaba em 5 dias  ");
     }
 }
 

@@ -15,13 +15,13 @@ public record ContaDTO(
             @Schema(description = "ID do conta", example = "1")
             Long id,
             @NotBlank(message = "Descrição é obrigatória")
-            @Schema(description = "Descrição do serviço", example = "Pix")
+            @Schema(description = "Descrição", example = "Loja de celular")
             String descricao,
 
-            @NotNull(message = "Saldo é obrigatorio")
-            @DecimalMin(value = "0.0", inclusive = false, message = "Saldo da conta deve ser positivo")
-            @Schema(description = "Saldo da Conta", example = "120.00")
-            Double saldo,
+            @NotNull(message = "Cadastro é obrigatorio")
+            @DecimalMin(value = "0.0", inclusive = false, message = "Cadastro Invalido")
+            @Schema(description = "Cadastro invalido")
+            Double cadastro,
 
             @NotNull(message = "Data de início da transação")
             @Schema(description = "Data de início", example = "2025-08-05")
@@ -35,7 +35,7 @@ public record ContaDTO(
             return new ContaDTO(
                     s.getId(),
                     s.getDescricao(),
-                    s.getSaldo(),
+                    s.getcadastro(),
                     s.getDataInicio(),
                     s.getDataFim()
             );
@@ -46,7 +46,7 @@ public record ContaDTO(
             return Conta.builder()
                     .id(id)
                     .descricao(descricao)
-                    .saldo(saldo)
+                    .cadastro(cadastro)
                     .dataInicio(dataInicio)
                     .dataFim(dataFim)
                     .build();

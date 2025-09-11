@@ -13,7 +13,7 @@ public class Conta {
     private Long id;
 
     private String descricao;
-    private Double saldo;
+    private int Cadastro;
     private LocalDate dataInicio;
     private LocalDate dataFim;
 }

@@ -2,9 +2,12 @@ package service;
 
 
 
+import dto.ContaDTO;
 import entity.Conta;
+import exception.EntidadeNaoEncontrada;
 import exception.RegraDeNegocioException;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.events.Event;
 import repository.ContaRepository;
 
 import java.time.temporal.ChronoUnit;
@@ -17,30 +20,42 @@ public class ContaAPPService {
         this.repository =  repository;
     }
 
-    public Conta salvar(Conta conta) {
-        validar(conta);
-        return repository.save(conta);
+    public ContaDTO salvar(ContaDTO dto) {
+        ContaDTO conta = dto.toEntity();
+        Conta.validar();
+        return ContaDTO.fromEntity(repository.save(conta));
     }
 
-    public List<Conta> listar() {
-        return repository.findAll();
+    public List<ContaDTO> listar() {
+        return repository.findAll()
+                .stream()
+                .map(ContaDTO::fromEntity)
+                .toList();
+
     }
 
-    public Conta buscarPorId(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Cadastro Encontrado."));
+    public ContaDTO buscarPorId(Long id) {
+        return ContaDTO.fromEntity(
+                repository.findById(id)
+
+                .orElseThrow(() -> new EntidadeNaoEncontrada("Conta com ID" +id+"Cadastro Encontrado."))
+        ).toEntity();
     }
 
-    public Conta atualizar(Long id, Conta cadastroAtualizada) {
-      Conta existente = buscarPorId(id);
-     cadastroAtualizada.setId(existente.getId());
-        validar(cadastroAtualizada);
-        return repository.save(cadastroAtualizada);
+    public Conta atualizar(Long id, ContaDTO cadastroAtualizado) {
+      Conta existente = repository.findById(id)
+        .orElseThrow(() -> new EntidadeNaoEncontrada("Conta com ID" +id+ "Cadastro Encontrado."));
+
+      cadastroAtualizado = dtoAtualizado.toEntity();
+     atualizado.setId(existente.getId());
+
+     atualizado.validar();
+     return ContaDTO.fromEntity(repository.save(atualizado));
     }
 
     public void deletar(Long id) {
         if (!repository.existsById(id)) {
-            throw new RegraDeNegocioException("Deletar Cadastro.");
+            throw new EntidadeNaoEncontrada("Conta com ID." +id+ "não encontrado.");
         }
         repository.deleteById(id);
     }

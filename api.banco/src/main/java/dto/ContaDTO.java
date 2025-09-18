@@ -19,9 +19,9 @@ public record ContaDTO(
             String descricao,
 
             @NotNull(message = "Cadastro é obrigatorio")
-            @DecimalMin(value = "0.0", inclusive = false, message = "Cadastro Invalido")
+            @DecimalMin(value = "1.0", inclusive = true, message = "Cadastro Invalido")
             @Schema(description = "Cadastro invalido")
-            Double cadastro,
+            int cadastro,
 
             @NotNull(message = "Data de início da transação")
             @Schema(description = "Data de início", example = "2025-08-05")
@@ -35,21 +35,21 @@ public record ContaDTO(
             return new ContaDTO(
                     s.getId(),
                     s.getDescricao(),
-                    s.getcadastro(),
+                     s.getCadastro(),
                     s.getDataInicio(),
                     s.getDataFim()
             );
 
         }
 
-    public Conta toEntity() {
-            return Conta.builder()
+    public ContaDTO toEntity() {
+            return ContaDTO.fromEntity(Conta.builder()
                     .id(id)
                     .descricao(descricao)
-                    .cadastro(cadastro)
+                    .Cadastro(cadastro)
                     .dataInicio(dataInicio)
                     .dataFim(dataFim)
-                    .build();
+                    .build());
         }
     }
 

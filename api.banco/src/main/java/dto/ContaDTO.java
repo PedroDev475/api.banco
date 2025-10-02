@@ -42,14 +42,14 @@ public record ContaDTO(
 
         }
 
-    public ContaDTO toEntity() {
-            return ContaDTO.fromEntity(Conta.builder()
-                    .id(id)
-                    .descricao(descricao)
-                    .Cadastro(cadastro)
-                    .dataInicio(dataInicio)
-                    .dataFim(dataFim)
-                    .build());
+    public Conta toEntity() {
+            return Conta.builder()
+                    .id(this.id)
+                    .descricao(this.descricao)
+                    .cadastro(this.cadastro)
+                    .dataInicio(this.dataInicio)
+                    .dataFim(this.dataFim)
+                    .build();
         }
     }
 

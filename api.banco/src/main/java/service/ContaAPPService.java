@@ -7,7 +7,6 @@ import entity.Conta;
 import exception.EntidadeNaoEncontrada;
 import exception.RegraDeNegocioException;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.events.Event;
 import repository.ContaRepository;
 
 import java.time.temporal.ChronoUnit;
@@ -21,8 +20,8 @@ public class ContaAPPService {
     }
 
     public ContaDTO salvar(ContaDTO dto) {
-        ContaDTO conta = dto.toEntity();
-        Conta.validar();
+        Conta conta =  dto.toEntity();
+        conta.validar();
         return ContaDTO.fromEntity(repository.save(conta));
     }
 
@@ -35,22 +34,23 @@ public class ContaAPPService {
     }
 
     public ContaDTO buscarPorId(Long id) {
-        return ContaDTO.fromEntity(
-                repository.findById(id)
+         Conta conta = repository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontrada("Conta com ID" +id+"Cadastro Encontrado."));
+          return ContaDTO.fromEntity(conta );
 
-                .orElseThrow(() -> new EntidadeNaoEncontrada("Conta com ID" +id+"Cadastro Encontrado."))
-        ).toEntity();
     }
 
-    public Conta atualizar(Long id, ContaDTO cadastroAtualizado) {
-      Conta existente = repository.findById(id)
+    public ContaDTO atualizar(Long id, ContaDTO cadastroAtualizado) {
+      Conta contaExistente = repository.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontrada("Conta com ID" +id+ "Cadastro Encontrado."));
 
-      cadastroAtualizado = dtoAtualizado.toEntity();
-     atualizado.setId(existente.getId());
+       Conta contaAtualizado = cadastroAtualizado.toEntity();
 
-     atualizado.validar();
-     return ContaDTO.fromEntity(repository.save(atualizado));
+       contaAtualizado.setId(contaExistente.getId());
+
+     contaAtualizado.validar();
+
+     return ContaDTO.fromEntity(repository.save(contaAtualizado));
     }
 
     public void deletar(Long id) {

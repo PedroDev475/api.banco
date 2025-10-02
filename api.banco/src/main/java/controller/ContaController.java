@@ -66,9 +66,10 @@ public class ContaController {
     )
     @PostMapping
     public ResponseEntity<ContaDTO> criar(@Valid @org.springframework.web.bind.annotation.RequestBody ContaDTO dto) {
+        ContaDTO contaSalva = service.salvar(dto);
         return ResponseEntity
                 .status(201)
-                .body(service.salvar(dto.toEntity()));
+                .body(contaSalva);
     }
 
     @Operation(
@@ -153,9 +154,9 @@ public class ContaController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<Conta> atualizar(@PathVariable Long id, @Valid @org.springframework.web.bind.annotation.RequestBody ContaDTO dto) {
-        return ResponseEntity
-                .ok(service.atualizar(id, dto.toEntity()));
+    public ResponseEntity<ContaDTO> atualizar(@PathVariable Long id, @Valid @org.springframework.web.bind.annotation.RequestBody ContaDTO dto) {
+        ContaDTO contaAtualizada = service.atualizar(id, dto);
+        return ResponseEntity.ok(contaAtualizada);
     }
 
     @Operation(

@@ -2,25 +2,24 @@ package com.senai.teste_de_sofware.api.banco;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import controller.ContaTesteSwaggerAplication;
 import dto.ContaDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+@SpringBootTest(classes = ContaTesteSwaggerAplication.class)
 @AutoConfigureMockMvc
 public class ContaIntegrationTest {
 
@@ -60,7 +59,7 @@ public class ContaIntegrationTest {
                 "Loja de celular",
                 1,
                 LocalDate.now(),
-                LocalDate.now().plusDays(5)
+                LocalDate.now().plusDays(10)
         );
 
         var salvo = mockMvc.perform(post("/contas")
@@ -91,7 +90,7 @@ public class ContaIntegrationTest {
     @Test
     void deveDeletarConta() throws Exception {
         var dto = new ContaDTO(null, "Conta", 1,
-                LocalDate.now(), LocalDate.now().plusDays(1));
+                LocalDate.now(), LocalDate.now().plusDays(10));
         var salvo = mockMvc.perform(post("/contas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))

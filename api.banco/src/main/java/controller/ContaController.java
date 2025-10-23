@@ -27,7 +27,7 @@ public class ContaController {
 
     private final ContaAPPService service;
 
-    public ContaController(ContaAppService service) {
+    public ContaController(ContaAPPService service) {
         this.service = service;
     }
 

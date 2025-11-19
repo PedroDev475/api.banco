@@ -33,6 +33,7 @@ enum class LevelStatus { COMPLETED, ACTIVE, LOCKED, CHEST }
 @Composable
 fun SenaiGameScreen() {
     // Lista simulada de níveis
+
     val levels = List(5) { index ->
         when (index) {
             0 -> Level(index, LevelStatus.COMPLETED)
